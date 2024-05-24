@@ -4,7 +4,7 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
 // Initialize the Express app
-export const app = express();
+const app = express();
 
 // Set the port number
 const port = process.env.PORT || 3000;
@@ -40,3 +40,6 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
 });
+
+// Export the app
+module.exports = app;
