@@ -11,8 +11,8 @@ pool.on("connect", () => {
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, async () => {
+app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 
-  await establishConnection();
+  establishConnection(); // Call establishConnection without await
 });

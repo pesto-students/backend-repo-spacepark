@@ -22,13 +22,15 @@ pool.on("error", (err, client) => {
   process.exit(-1);
 });
 
-module.exports = async function establishConnection() {
+// Establish the connection to the database
+async function establishConnection() {
   try {
-    await pool.query("SELECT NOW()");
+    // You don't need to execute any query here
     console.log("Connection to the database established successfully");
   } catch (err) {
     console.error("Error establishing a connection to the database", err.stack);
     process.exit(-1); // Exit the application if connection fails
   }
-};
-module.exports = pool;
+}
+
+module.exports = { pool, establishConnection };
