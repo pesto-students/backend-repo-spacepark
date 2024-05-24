@@ -26,6 +26,7 @@ pool.on("error", (err, client) => {
 async function establishConnection() {
   try {
     // You don't need to execute any query here
+    await pool.query("SELECT NOW()");
     console.log("Connection to the database established successfully");
   } catch (err) {
     console.error("Error establishing a connection to the database", err.stack);
