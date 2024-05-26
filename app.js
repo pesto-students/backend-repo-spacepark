@@ -2,7 +2,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-
+const userRoutes = require("./userRoutes");
+const contactRoutes = require("./contactRoutes");
 // Initialize the Express app
 const app = express();
 
@@ -15,6 +16,10 @@ app.use(morgan("dev"));
 // Use body-parser to parse JSON bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Routes
+app.use("/api", userRoutes);
+app.use("/api", contactRoutes);
 
 // Basic route
 app.get("/", (req, res) => {
