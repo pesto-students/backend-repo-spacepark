@@ -13,9 +13,6 @@ const sequelize = new Sequelize(process.env.DB_CONNECTION_URL, {
       rejectUnauthorized: false, // For development purposes only; set to true in production
     },
   },
-  // ssl: {
-  //   rejectUnauthorized: false, // For development purposes only; set to true in production
-  // },
 });
 
 module.exports = sequelize;
