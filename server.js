@@ -1,18 +1,21 @@
 const app = require("./app");
 const dotenv = require("dotenv");
+const sequelize = require("./db");
 
 dotenv.config();
+const PORT = process.env.PORT || 3000;
 
-const { pool, establishConnection } = require("./db");
+// Check database connection
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Database connection has been established successfully.");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
 
-pool.on("connect", () => {
-  console.log("Connected to the database");
-});
-
-const port = process.env.PORT || 3000;
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-
-  establishConnection(); // Call establishConnection without await
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
