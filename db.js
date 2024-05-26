@@ -1,37 +1,27 @@
-const { Pool } = require("pg");
-const dotenv = require("dotenv");
+// db.js
+const { Sequelize } = require("sequelize");
+const pg = require("pg"); // Import the pg package
 
-dotenv.config();
+// Connection string
+const connectionString =
+  "postgres://spaceparkdb_user:wRXBd1iGpiSQfRQpi8nnSg0Qg6Ajgd0Q@dpg-coohagmv3ddc738og7d0-a.singapore-postgres.render.com/spaceparkdb";
 
-// Create a new pool instance with the connection URL
-const pool = new Pool({
-  connectionString: process.env.DB_CONNECTION_URL,
-  ssl: {
-    rejectUnauthorized: false, // For development purposes only; set to true in production
-  },
+// Set up the pg package to handle BigInt type correctly
+pg.defaults.parseInt8 = true;
+
+// Create Sequelize instance
+const sequelize = new Sequelize(connectionString, {
+  dialect: "postgres",
+  dialectModule: pg, // Use the pg package for PostgreSQL
 });
 
-// Log a message when a new client connects to the pool
-pool.on("connect", () => {
-  console.log("Connected to the PostgreSQL database");
-});
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Database connection has been established successfully.");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
 
-// Log any errors that occur while handling clients in the pool
-pool.on("error", (err, client) => {
-  console.error("Unexpected error on idle client", err);
-  process.exit(-1);
-});
-
-// Establish the connection to the database
-async function establishConnection() {
-  try {
-    // You don't need to execute any query here
-    await pool.query("SELECT NOW()");
-    console.log("Connection to the database established successfully");
-  } catch (err) {
-    console.error("Error establishing a connection to the database", err.stack);
-    process.exit(-1); // Exit the application if connection fails
-  }
-}
-
-module.exports = { pool, establishConnection };
+module.exports = sequelize;
