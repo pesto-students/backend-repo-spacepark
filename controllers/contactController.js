@@ -1,6 +1,6 @@
 // contactController.js
-const asyncWrapper = require("./asyncWrapper");
-const Contact = require("./models/contact");
+const asyncWrapper = require("./../utils/catchAsync");
+const Contact = require("./../models/contacts");
 
 const getAllContacts = asyncWrapper(async (req, res) => {
   const contacts = await Contact.findAll();

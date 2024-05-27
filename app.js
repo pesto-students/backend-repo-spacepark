@@ -2,8 +2,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const userRoutes = require("./userRoutes");
-const contactRoutes = require("./contactRoutes");
+const userRoutes = require("./routes/userRoutes");
+const contactRoutes = require("./routes/contactRoutes");
 // Initialize the Express app
 const app = express();
 

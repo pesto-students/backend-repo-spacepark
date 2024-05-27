@@ -1,6 +1,6 @@
 // userRoutes.js
 const express = require("express");
-const userController = require("./userController");
+const userController = require("./../controllers/userController");
 
 const router = express.Router();
 

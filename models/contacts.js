@@ -1,6 +1,6 @@
 // contact.js
 const { DataTypes } = require("sequelize");
-const sequelize = require("./db");
+const sequelize = require("./../db");
 const User = require("./user");
 
 const Contact = sequelize.define("Contact", {

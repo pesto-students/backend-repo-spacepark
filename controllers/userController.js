@@ -1,5 +1,5 @@
-const asyncWrapper = require("./asyncWrapper");
-const User = require("./models/user");
+const asyncWrapper = require("./../utils/catchAsync");
+const User = require("./../models/user");
 
 const getAllUsers = asyncWrapper(async (req, res) => {
   const users = await User.findAll();
