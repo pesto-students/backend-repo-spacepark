@@ -4,22 +4,28 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
 const contactRoutes = require("./routes/contactRoutes");
+const paymentRoutes = require('./routes/PaymentRoute');
+const services = require('./routes/ServicesRoute');
+const cors = require("cors"); 
 // Initialize the Express app
 const app = express();
 
 // Set the port number
 const port = process.env.PORT || 3000;
 
+app.use(cors());
+app.options('*', cors());
 // Use morgan to log requests to the console
 app.use(morgan("dev"));
 
 // Use body-parser to parse JSON bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 // Routes
 app.use("/api", userRoutes);
 app.use("/api", contactRoutes);
+app.use("/api", paymentRoutes);
+app.use("/api", services);
 
 // Basic route
 app.get("/", (req, res) => {
