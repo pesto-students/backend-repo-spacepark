@@ -1,0 +1,11 @@
+{
+  "development": {
+    "url": "postgres://spaceparkdb_user:wRXBd1iGpiSQfRQpi8nnSg0Qg6Ajgd0Q@dpg-coohagmv3ddc738og7d0-a.singapore-postgres.render.com/spaceparkdb",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+  }
+}
