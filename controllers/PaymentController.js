@@ -5,8 +5,8 @@ const crypto = require('crypto');
 
 // Initialize Razorpay instance with your keys
 const razorpayInstance = new Razorpay({
-  key_id: "rzp_test_Iq1MeTmgm2QwEg",
-  key_secret: "MIaMSJ2XmORyUCymBKdWusxy",
+  key_id: process.env.KEY_ACCESS_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 const createOrder = asyncWrapper(async (req, res) => {
