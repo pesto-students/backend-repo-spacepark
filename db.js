@@ -4,6 +4,8 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
+const config = require('./config/config');
+
 // Initialize Sequelize with the connection URL
 const sequelize = new Sequelize(process.env.DB_CONNECTION_URL, {
   dialect: "postgres",
