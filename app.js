@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const userRoutes = require("./routes/userRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const paymentRoutes = require('./routes/PaymentRoute');
+const ticketRoutes = require("./routes/ticketRoutes");
+const parkingSpaceRoutes = require("./routes/parkingSpaceRoutes");
 const services = require('./routes/ServicesRoute');
 const cors = require("cors"); 
 // Initialize the Express app
@@ -26,6 +28,8 @@ app.use("/api", userRoutes);
 app.use("/api", contactRoutes);
 app.use("/api", paymentRoutes);
 app.use("/api", services);
+app.use("/api", ticketRoutes);
+app.use("/api", parkingSpaceRoutes);
 
 // Basic route
 app.get("/", (req, res) => {
