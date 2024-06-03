@@ -4,7 +4,7 @@ const User = require("./user"); // Import the User model
 const ParkingSpace = require("./parkingSpace"); //Import the Parking Space model
 const Service = require("./ServericesModel"); // Import the service model
 
-const Ticket = sequelize.define("Ticket", {
+const Ticket = sequelize.define("Tickets", {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -58,7 +58,7 @@ const Ticket = sequelize.define("Ticket", {
 
 // Define association with the User, ParkingSpace and Service models
 Ticket.belongsTo(User, { foreignKey: 'userId' });
-Ticket.hasOne(ParkingSpace, { foreignKey: 'parkingSpaceId' });
-Ticket.hasOne(Service, { foreignKey: 'serviceId'});
+Ticket.belongsTo(ParkingSpace, { foreignKey: 'parkingSpaceId' });
+Ticket.belongsTo(Service, { foreignKey: 'serviceId'});
 
 module.exports = Ticket;

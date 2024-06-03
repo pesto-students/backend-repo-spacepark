@@ -1,4 +1,4 @@
-const asyncWrapper = require("../utils/catchAsync");
+const asyncWrapper = require("./../utils/catchAsync");
 const ParkingSpace = require("../models/parkingSpace");
 
 const getAllParkingSpaces = asyncWrapper(async (req, res) => {
