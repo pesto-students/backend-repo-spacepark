@@ -1,8 +1,25 @@
 const asyncWrapper = require("./../utils/catchAsync");
 const ParkingSpace = require("../models/parkingSpace");
+const { Op } = require("sequelize");
 
+/*
 const getAllParkingSpaces = asyncWrapper(async (req, res) => {
   const parkingSpaces = await ParkingSpace.findAll();
+  res.json(parkingSpaces);
+});
+*/
+
+const getAllParkingSpaces = asyncWrapper(async (req, res) => {
+  const { location } = req.query;
+  let whereClause = {};
+
+  if (location) {
+    whereClause.location = {
+      [Op.like]: `%${location}%`
+    };
+  }
+
+  const parkingSpaces = await ParkingSpace.findAll({ where: whereClause });
   res.json(parkingSpaces);
 });
 

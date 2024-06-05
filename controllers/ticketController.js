@@ -1,9 +1,51 @@
 const asyncWrapper = require("../utils/catchAsync");
 const Ticket = require("../models/ticket");
+const { Op } = require("sequelize");
 
-const getAllTickets = asyncWrapper(async (req, res) => {
+/*const getAllTickets = asyncWrapper(async (req, res) => {
   const tickets = await Ticket.findAll();
-  // date from and  to
+  res.json(tickets);
+});
+*/
+const getAllTickets = asyncWrapper(async (req, res) => {
+  const { type } = req.query; // 'type' can be 'past', 'present', or 'future'
+
+  let dateCondition;
+  const currentDate = new Date();
+
+  switch (type) {
+    case 'past':
+      dateCondition = {
+        endDate: {
+          [Op.lt]: currentDate
+        }
+      };
+      break;
+    case 'present':
+      dateCondition = {
+        startDate: {
+          [Op.lte]: currentDate
+        },
+        endDate: {
+          [Op.gte]: currentDate
+        }
+      };
+      break;
+    case 'future':
+      dateCondition = {
+        startDate: {
+          [Op.gt]: currentDate
+        }
+      };
+      break;
+    default:
+      dateCondition = {};
+  }
+
+  const tickets = await Ticket.findAll({
+    where: dateCondition
+  });
+
   res.json(tickets);
 });
 
@@ -21,6 +63,7 @@ const getTicketById = asyncWrapper(async (req, res) => {
   res.json(ticket);
 });
 
+/*
 const updateTicket = asyncWrapper(async (req, res) => {
   const ticketId = req.params.id;
   const ticket = await Ticket.findByPk(ticketId);
@@ -30,7 +73,9 @@ const updateTicket = asyncWrapper(async (req, res) => {
   await ticket.update(req.body);
   res.json(ticket);
 });
+*/
 
+/*
 const deleteTicket = asyncWrapper(async (req, res) => {
   const ticketId = req.params.id;
   const ticket = await Ticket.findByPk(ticketId);
@@ -40,11 +85,12 @@ const deleteTicket = asyncWrapper(async (req, res) => {
   await ticket.destroy();
   res.status(204).end();
 });
+*/
 
 module.exports = {
   getAllTickets,
   createTicket,
   getTicketById,
-  updateTicket,
-  deleteTicket,
+//  updateTicket,
+//  deleteTicket,
 };

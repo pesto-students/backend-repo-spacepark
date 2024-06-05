@@ -22,7 +22,7 @@ const Ticket = sequelize.define("Tickets", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  services: {
+  serviceId: {
     type: DataTypes.STRING,
     allowNull: false,
   },
