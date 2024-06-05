@@ -25,7 +25,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
-app.use("/auth", authRoutes);
+
 app.use("/users", userRoutes);
 app.use("/api", contactRoutes);
 app.use("/api", paymentRoutes);
