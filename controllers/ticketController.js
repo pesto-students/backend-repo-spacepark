@@ -3,6 +3,7 @@ const Ticket = require("../models/ticket");
 
 const getAllTickets = asyncWrapper(async (req, res) => {
   const tickets = await Ticket.findAll();
+  // date from and  to
   res.json(tickets);
 });
 
