@@ -2,13 +2,14 @@
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const contactRoutes = require("./routes/contactRoutes");
-const paymentRoutes = require('./routes/PaymentRoute');
-const services = require('./routes/ServicesRoute');
+const paymentRoutes = require("./routes/PaymentRoute");
+const services = require("./routes/ServicesRoute");
 const parkingSpaceRoutes = require("./routes/parkingSpaceRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
-const cors = require("cors"); 
+const cors = require("cors");
 // Initialize the Express app
 const app = express();
 
@@ -16,7 +17,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
-app.options('*', cors());
+app.options("*", cors());
 // Use morgan to log requests to the console
 app.use(morgan("dev"));
 
@@ -24,7 +25,8 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
-app.use("/api", userRoutes);
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
 app.use("/api", contactRoutes);
 app.use("/api", paymentRoutes);
 app.use("/api", services);
@@ -36,15 +38,6 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// Example POST route
-app.post("/data", (req, res) => {
-  const receivedData = req.body;
-  res.json({
-    message: "Data received successfully",
-    data: receivedData,
-  });
-});
-
 // 404 error handler
 app.use((req, res, next) => {
   res.status(404).send("Sorry, that route doesn't exist.");
@@ -53,7 +46,8 @@ app.use((req, res, next) => {
 // General error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send("Something went wrong!");
+  //wil write remainf code later
+  res.status(500).send("Something went wrong!", err.status, err.message);
 });
 
 // Export the app
