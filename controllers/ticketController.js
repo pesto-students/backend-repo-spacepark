@@ -63,6 +63,40 @@ const getTicketById = asyncWrapper(async (req, res) => {
   res.json(ticket);
 });
 
+exports.getActiveTicketsByUserId = asyncWrapper(async (req, res, next) => {
+  const { userId } = req.params;
+
+  const tickets = await Ticket.findAll({
+    where: {
+      userId,
+      status: {
+        [Op.in]: ["active", "onuse"],
+      },
+    },
+  });
+  res.json(tickets);
+});
+
+exports.updateTicketStatus = asyncWrapper(async (req, res, next) => {
+  const { ticketId, status, timeType } = req.body;
+
+  const ticket = await Ticket.findByPk(ticketId);
+  if (!ticket) {
+    return res.status(404).json({ error: "Ticket not found" });
+  }
+
+  if (status === "onuse") {
+    ticket.status = "onuse";
+    ticket.startDate = new Date(); // Set start time
+  } else if (status === "used") {
+    ticket.status = "used";
+    ticket.endDate = new Date(); // Set end time
+  }
+
+  await ticket.save();
+  res.json(ticket);
+});
+
 /*
 const updateTicket = asyncWrapper(async (req, res) => {
   const ticketId = req.params.id;
@@ -91,6 +125,8 @@ module.exports = {
   getAllTickets,
   createTicket,
   getTicketById,
+  getActiveTicketsByUserId,
+  updateTicketStatus,
   //  updateTicket,
   //  deleteTicket,
 };

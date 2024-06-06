@@ -42,6 +42,7 @@ const Ticket = sequelize.define("Tickets", {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
+  // active, onuse, used, expired
   status: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -57,8 +58,8 @@ const Ticket = sequelize.define("Tickets", {
 });
 
 // Define association with the User, ParkingSpace and Service models
-Ticket.belongsTo(User, { foreignKey: 'userId' });
-Ticket.belongsTo(ParkingSpace, { foreignKey: 'parkingSpaceId' });
-Ticket.belongsTo(Service, { foreignKey: 'serviceId'});
+Ticket.belongsTo(User, { foreignKey: "userId" });
+Ticket.belongsTo(ParkingSpace, { foreignKey: "parkingSpaceId" });
+Ticket.belongsTo(Service, { foreignKey: "serviceId" });
 
 module.exports = Ticket;
