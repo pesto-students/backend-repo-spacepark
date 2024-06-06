@@ -11,6 +11,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "cloudinary": "^2.2.0",
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
     "dotenv": "^16.4.5",
@@ -20,6 +21,7 @@
     "mysql2": "^3.9.9",
     "pg": "^8.11.5",
     "pg-hstore": "^2.3.4",
+    "qr-code-styling": "^1.6.0-rc.1",
     "razorpay": "^2.9.4",
     "sequelize": "^6.37.3",
     "validator": "^13.12.0"

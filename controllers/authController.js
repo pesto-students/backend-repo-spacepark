@@ -6,21 +6,29 @@ const { validationResult } = require("validator");
 
 require("dotenv").config();
 
-exports.signup = asyncWrapper(async (req, res) => {
+exports.signup = asyncWrapper(async (req, res, next) => {
   const { name, email, password } = req.body;
 
-  // Basic validation (assuming you're using validator)
-
-  // Check for existing email
-  const existingUser = await User.findOne({ where: { email } });
-  if (existingUser) {
-    return res.status(400).json({ message: "Email already in use" });
-  }
-
   const hashedPassword = await bcrypt.hash(password, 10);
-  const user = await User.create({ name, email, password: hashedPassword });
+  const qrCodeId = email + new Date().getTime();
 
-  res.status(201).json({ message: "User created successfully" });
+  //need to update this based on sequlize and add qrcode is field
+  const user = new User({ name, email, password: hashedPassword, qrCodeId });
+
+  const qrCode = new QRCodeStyling({
+    width: 300,
+    height: 300,
+    data: qrCodeId,
+  });
+
+  // Upload QR code to Cloudinary
+  const qrCodeUrl = await uploadQRCodeToCloudinary(qrCode);
+
+  // Save QR code URL in the user document
+  user.qrCodeUrl = qrCodeUrl;
+
+  await user.save();
+  res.status(201).json({ message: "User created successfully", qrCodeUrl });
 });
 
 exports.login = asyncWrapper(async (req, res) => {
@@ -38,4 +46,15 @@ exports.login = asyncWrapper(async (req, res) => {
     expiresIn: "1h",
   });
   res.json({ token });
+});
+
+exports.getQRCode = asyncWrapper(async (req, res) => {
+  const { userId } = req.params;
+
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  res.status(200).json({ qrCodeUrl: user.qrCodeUrl });
 });

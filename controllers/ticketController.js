@@ -14,28 +14,28 @@ const getAllTickets = asyncWrapper(async (req, res) => {
   const currentDate = new Date();
 
   switch (type) {
-    case 'past':
+    case "past":
       dateCondition = {
         endDate: {
-          [Op.lt]: currentDate
-        }
+          [Op.lt]: currentDate,
+        },
       };
       break;
-    case 'present':
+    case "present":
       dateCondition = {
         startDate: {
-          [Op.lte]: currentDate
+          [Op.lte]: currentDate,
         },
         endDate: {
-          [Op.gte]: currentDate
-        }
+          [Op.gte]: currentDate,
+        },
       };
       break;
-    case 'future':
+    case "future":
       dateCondition = {
         startDate: {
-          [Op.gt]: currentDate
-        }
+          [Op.gt]: currentDate,
+        },
       };
       break;
     default:
@@ -43,7 +43,7 @@ const getAllTickets = asyncWrapper(async (req, res) => {
   }
 
   const tickets = await Ticket.findAll({
-    where: dateCondition
+    where: dateCondition,
   });
 
   res.json(tickets);
@@ -91,6 +91,6 @@ module.exports = {
   getAllTickets,
   createTicket,
   getTicketById,
-//  updateTicket,
-//  deleteTicket,
+  //  updateTicket,
+  //  deleteTicket,
 };
