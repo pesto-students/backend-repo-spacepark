@@ -43,6 +43,7 @@ const Ticket = sequelize.define("Tickets", {
     allowNull: false,
   },
   // active, onuse, used, expired
+  //add on more filed for QRcode id
   status: {
     type: DataTypes.STRING,
     allowNull: false,
