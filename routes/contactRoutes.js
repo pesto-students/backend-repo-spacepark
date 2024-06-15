@@ -13,6 +13,7 @@ router.delete("/contacts/:id", contactController.deleteContact);
 */
 
 // POST route for submitting contact form
+router.post("/contacts", contactController.createContact);
 router.post('/contacts', async (req, res) => {
     const { name, email, message } = req.body;
     const newContact = new Contact({

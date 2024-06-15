@@ -21,10 +21,7 @@ const Contact = sequelize.define("Contact", {
     type: String,
     required: true,
   },
-  status: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
+  
 });
 
 // Define associations
