@@ -38,6 +38,10 @@ const Ticket = sequelize.define("Tickets", {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
+  services: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   price: {
     type: DataTypes.FLOAT,
     allowNull: false,

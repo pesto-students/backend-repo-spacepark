@@ -9,9 +9,17 @@ const Contact = sequelize.define("Contact", {
     primaryKey: true,
     autoIncrement: true,
   },
-  QueryString: {
-    type: DataTypes.STRING,
-    allowNull: false,
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  message: {
+    type: String,
+    required: true,
   },
   status: {
     type: DataTypes.STRING,
