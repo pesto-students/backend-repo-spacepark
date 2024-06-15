@@ -125,8 +125,8 @@ module.exports = {
   getAllTickets,
   createTicket,
   getTicketById,
-  getActiveTicketsByUserId,
-  updateTicketStatus,
+  // getActiveTicketsByUserId,
+  // updateTicketStatus,
   //  updateTicket,
   //  deleteTicket,
 };

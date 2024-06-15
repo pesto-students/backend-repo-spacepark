@@ -8,12 +8,6 @@ const User = sequelize.define("User", {
     primaryKey: true,
     autoIncrement: true,
   },
-
-  // new field added post migration
-  qrCodeUrl: {
-    type: DataTypes.STRING,
-    allowNull: true,
-  },
   username: {
     type: DataTypes.STRING,
     unique: true,

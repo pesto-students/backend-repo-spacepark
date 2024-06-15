@@ -54,7 +54,7 @@ const getAllPayments = asyncWrapper(async (req, res) => {
 });
 
 const verifyPayment = asyncWrapper(async (req, res) => {
-  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body.response;
 
   const paymentEntry = await Payment.findOne({ where: { orderID: razorpay_order_id } });
   if (!paymentEntry) {
@@ -67,7 +67,7 @@ const verifyPayment = asyncWrapper(async (req, res) => {
     .digest('hex');
 
   if (expectedSignature === razorpay_signature) {
-    await paymentEntry.update({
+    const payment = await paymentEntry.update({
       status: 'paid',
       response: {
         ...paymentEntry.response,
@@ -75,7 +75,7 @@ const verifyPayment = asyncWrapper(async (req, res) => {
         razorpay_signature,
       }
     });
-    res.json({ success: true });
+    res.json({ success: true, data: payment });
   } else {
     await paymentEntry.update({
       status: 'failed',

@@ -15,7 +15,7 @@ const getAllParkingSpaces = asyncWrapper(async (req, res) => {
 
   if (location) {
     whereClause.location = {
-      [Op.like]: `%${location}%`
+      [Op.iLike]: `%${location}%` // Use Op.iLike for case-insensitive matching
     };
   }
 
