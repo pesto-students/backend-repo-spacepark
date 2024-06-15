@@ -9,7 +9,7 @@ router.get("/tickets/:id", ticketController.getTicketById); // my bookings, past
 // router.put("/tickets/:id", ticketController.updateTicket); // future - change of time, admin,
 // router.delete("/tickets/:id", ticketController.deleteTicket);
 
-// router.get("/active/:userId", ticketController.getActiveTicketsByUserId);
+router.get("/tickets/active/:userId", ticketController.getActiveTicketsByUserId);
 
-// router.post("/update-status", ticketController.updateTicketStatus);
+router.post("/tickets/update-status", ticketController.updateTicketStatus);
 module.exports = router;

@@ -63,21 +63,29 @@ const getTicketById = asyncWrapper(async (req, res) => {
   res.json(ticket);
 });
 
-exports.getActiveTicketsByUserId = asyncWrapper(async (req, res, next) => {
+const getActiveTicketsByUserId = asyncWrapper(async (req, res, next) => {
   const { userId } = req.params;
+  const currentTime = new Date();
+  console.log(currentTime);
 
   const tickets = await Ticket.findAll({
     where: {
       userId,
       status: {
-        [Op.in]: ["active", "onuse"],
+        [Op.in]: ["Booked", "Checked-In"],
+        },
+      startTime: {
+        [Op.lte]: currentTime,
+      },
+      endTime: {
+        [Op.gte]: currentTime,
       },
     },
   });
   res.json(tickets);
 });
 
-exports.updateTicketStatus = asyncWrapper(async (req, res, next) => {
+const updateTicketStatus = asyncWrapper(async (req, res, next) => {
   const { ticketId, status, timeType } = req.body;
 
   const ticket = await Ticket.findByPk(ticketId);
@@ -85,11 +93,11 @@ exports.updateTicketStatus = asyncWrapper(async (req, res, next) => {
     return res.status(404).json({ error: "Ticket not found" });
   }
 
-  if (status === "onuse") {
-    ticket.status = "onuse";
+  if (status === "Booked") {
+    ticket.status = "Checked-In";
     ticket.startDate = new Date(); // Set start time
-  } else if (status === "used") {
-    ticket.status = "used";
+  } else if (status === "Checked-In") {
+    ticket.status = "Completed";
     ticket.endDate = new Date(); // Set end time
   }
 
@@ -125,8 +133,8 @@ module.exports = {
   getAllTickets,
   createTicket,
   getTicketById,
-  // getActiveTicketsByUserId,
-  // updateTicketStatus,
+  getActiveTicketsByUserId,
+  updateTicketStatus,
   //  updateTicket,
   //  deleteTicket,
 };
