@@ -1,6 +1,7 @@
 const asyncWrapper = require("./../utils/catchAsync");
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const QRCode = require('qrcode');
 const ParkingSpace = require('./../models/parkingSpace')
 const User = require('./../models/user');
 const ServericesModel = require('../controllers/ServicesController')
@@ -142,11 +143,29 @@ const deleteUser = asyncWrapper(async (req, res) => {
   res.status(204).end();
 });
 
+// Generate QR code
+const generateQRCode = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    console.log(`Received userId: ${userId}`);
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    console.log(`Found user: ${JSON.stringify(user)}`);
+    const qrCode = await QRCode.toDataURL(user.id.toString());
+    res.json({ qrCode });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = {
   getAllUsers,
   createUser,
   getUserById,
   updateUser,
   deleteUser,
-  createParkingSpaceOwner
+  createParkingSpaceOwner,
+  generateQRCode
 };
