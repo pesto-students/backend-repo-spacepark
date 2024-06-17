@@ -34,6 +34,14 @@ const Ticket = sequelize.define("Tickets", {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
+  checkInTime: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  checkOutTime: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   endDate: {
     type: DataTypes.DATEONLY,
     allowNull: false,
