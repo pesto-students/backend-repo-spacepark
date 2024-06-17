@@ -41,6 +41,9 @@ const User = sequelize.define("User", {
     type: DataTypes.DATEONLY,
     allowNull: true,
   },
+  // QRCodeURL: {
+  //   type: DataTypes.STRING,
+  // },
 });
 
 module.exports = User;
