@@ -10,6 +10,7 @@ const services = require("./routes/ServicesRoute");
 const parkingSpaceRoutes = require("./routes/parkingSpaceRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
 const cors = require("cors");
+const authMiddleware = require("./middlewares/authMiddleware");
 // Initialize the Express app
 const app = express();
 
@@ -25,6 +26,7 @@ app.use(morgan("dev"));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
+app.use(authMiddleware);
 app.use("/api", authRoutes);
 app.use("/users", userRoutes);
 app.use("/api", contactRoutes);
