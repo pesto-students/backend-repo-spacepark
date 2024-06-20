@@ -12,17 +12,19 @@ const getAllContacts = asyncWrapper(async (req, res) => {
 const createContact = asyncWrapper(async (req, res) => {
   console.log("Request received to create a new contact");
 
-  const { name, email, message } = req.body;
-  const newContact = new Contact({
-    name,
-    email,
-    message,
-  });
-
-  console.log("New contact to be saved:", newContact);
+  const { userId, name, email, message } = req.body;
+  
 
   try {
-    await newContact.save();
+    const newContact = await Contact.create({
+      userId,
+      name,
+      email,
+      message
+    });
+  
+
+    
     res.status(201).json({ message: 'Contact message saved successfully' });
   } catch (error) {
     console.error("Error saving contact:", error);
