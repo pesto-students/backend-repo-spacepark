@@ -1,14 +1,8 @@
-const asyncWrapper = require("./../utils/catchAsync");
+const asyncWrapper = require("../utils/catchAsync");
 const ParkingSpace = require("../models/parkingSpace");
 const { Op } = require("sequelize");
 
-/*
-const getAllParkingSpaces = asyncWrapper(async (req, res) => {
-  const parkingSpaces = await ParkingSpace.findAll();
-  res.json(parkingSpaces);
-});
-*/
-
+// Get all parking spaces, optionally filtered by location
 const getAllParkingSpaces = asyncWrapper(async (req, res) => {
   const { location } = req.query;
   let whereClause = {};
@@ -23,20 +17,30 @@ const getAllParkingSpaces = asyncWrapper(async (req, res) => {
   res.json(parkingSpaces);
 });
 
+// Create a new parking space
 const createParkingSpace = asyncWrapper(async (req, res) => {
   const newParkingSpace = await ParkingSpace.create(req.body);
   res.status(201).json(newParkingSpace);
 });
 
-const getParkingSpaceById = asyncWrapper(async (req, res) => {
-  const parkingSpaceId = req.params.id;
-  const parkingSpace = await ParkingSpace.findByPk(parkingSpaceId);
-  if (!parkingSpace) {
+// Get parking spaces by user ID
+const getParkingSpaceByUserId = asyncWrapper(async (req, res) => {
+  const userId = req.params.id;
+  console.log(userId);
+  let whereClause = {};
+  if (userId) {
+    whereClause.userId = userId; // Correctly match userId
+  }
+  const parkingSpaces = await ParkingSpace.findAll({ where: whereClause });
+  console.log(parkingSpaces); // Correct variable name
+
+  if (parkingSpaces.length === 0) {
     return res.status(404).json({ message: "Parking Space not found" });
   }
-  res.json(parkingSpace);
+  res.json(parkingSpaces);
 });
 
+// Update a parking space by ID
 const updateParkingSpace = asyncWrapper(async (req, res) => {
   const parkingSpaceId = req.params.id;
   const parkingSpace = await ParkingSpace.findByPk(parkingSpaceId);
@@ -47,6 +51,7 @@ const updateParkingSpace = asyncWrapper(async (req, res) => {
   res.json(parkingSpace);
 });
 
+// Delete a parking space by ID
 const deleteParkingSpace = asyncWrapper(async (req, res) => {
   const parkingSpaceId = req.params.id;
   const parkingSpace = await ParkingSpace.findByPk(parkingSpaceId);
@@ -60,7 +65,7 @@ const deleteParkingSpace = asyncWrapper(async (req, res) => {
 module.exports = {
   getAllParkingSpaces,
   createParkingSpace,
-  getParkingSpaceById,
+  getParkingSpaceByUserId,
   updateParkingSpace,
   deleteParkingSpace,
 };

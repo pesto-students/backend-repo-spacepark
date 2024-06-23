@@ -10,7 +10,7 @@ router.post(
   // authmiddleware,
   parkingSpaceController.createParkingSpace
 );
-router.get("/parkingSpaces/:id", parkingSpaceController.getParkingSpaceById);
+router.get("/parkingSpaces/:id", parkingSpaceController.getParkingSpaceByUserId);
 router.put("/parkingSpaces/:id", parkingSpaceController.updateParkingSpace);
 router.delete("/parkingSpaces/:id", parkingSpaceController.deleteParkingSpace);
 
