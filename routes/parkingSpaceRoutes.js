@@ -1,14 +1,10 @@
 const express = require("express");
 const parkingSpaceController = require("../controllers/parkingSpaceController");
-const authmiddleware = require('./../middlewares/authMiddleware');
-
+const authmiddleware = require("./../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.get(
-  "/parkingSpaces",
-  parkingSpaceController.getAllParkingSpaces
-);
+router.get("/parkingSpaces", parkingSpaceController.getAllParkingSpaces);
 router.post(
   "/parkingSpaces",
   // authmiddleware,

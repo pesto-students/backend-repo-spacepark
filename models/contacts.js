@@ -1,4 +1,3 @@
-// contact.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("./../db");
 const User = require("./user");
@@ -14,21 +13,28 @@ const Contact = sequelize.define("Contacts", {
     allowNull: false,
   },
   name: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   email: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   message: {
-    type: String,
-    required: true,
+    type: DataTypes.STRING,
+    allowNull: false,
   },
-  
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
+  },
 });
 
 // Define associations
-Contact.belongsTo(User, { foreignKey: "userid" });
+Contact.belongsTo(User, { foreignKey: "userId" });
 
 module.exports = Contact;
