@@ -1,18 +1,22 @@
 const asyncWrapper = require("../utils/catchAsync");
 const Ticket = require("../models/ticket");
 const { Op } = require("sequelize");
+const moment  = require('moment');
 
-/*const getAllTickets = asyncWrapper(async (req, res) => {
-  const tickets = await Ticket.findAll();
+const FetchAllTickets = asyncWrapper(async (req, res) => {
+  console.log("########################");
+  const tickets = await Ticket.findAll().catch(err=> {
+    console.log(err, 'EEEEEEEEEEEEEEEEEEEEEEEE');
+  });
   res.json(tickets);
 });
-*/
+
 const getAllTickets = asyncWrapper(async (req, res) => {
   const { type } = req.query; // 'type' can be 'past', 'present', or 'future'
-
+  console.log(type, 'Tyoe -------------------');
   let dateCondition;
   const currentDate = new Date();
-
+console.log(currentDate, 'Current Date -------------------------');
   switch (type) {
     case "past":
       dateCondition = {
@@ -49,10 +53,55 @@ const getAllTickets = asyncWrapper(async (req, res) => {
   res.json(tickets);
 });
 
-const createTicket = asyncWrapper(async (req, res) => {
-  const newTicket = await Ticket.create(req.body);
-  res.status(201).json(newTicket);
-});
+async function createTicket(req, res) {
+  try {
+    const {
+      carNumber,
+      checkInTime,
+      checkOutTime,
+      endDate,
+      mobile,
+      parkingSpaceId,
+      paymentId,
+      price,
+      serviceId,
+      services,
+      startDate,
+      status,
+      userId,
+    } = req.body;
+
+    // Parse and format dates correctly
+    const formattedStartDate = moment(startDate, 'DD/MM/YYYY').isValid() ? moment(startDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null;
+    const formattedEndDate = moment(endDate, 'DD/MM/YYYY').isValid() ? moment(endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null;
+
+    if (!formattedStartDate || !formattedEndDate) {
+      return res.status(400).json({ error: 'Invalid date format. Please use DD/MM/YYYY.' });
+    }
+
+    const ticket = await Ticket.create({
+      carNumber,
+      checkInTime, // Expecting 'HH:mm' format
+      checkOutTime, // Expecting 'HH:mm' format
+      endDate: formattedEndDate,
+      mobile,
+      parkingSpaceId,
+      paymentId,
+      price,
+      serviceId,
+      services,
+      startDate: formattedStartDate,
+      status,
+      userId,
+    });
+
+    res.status(201).json(ticket);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while creating the ticket.' });
+  }
+}
+
 
 const getTicketById = asyncWrapper(async (req, res) => {
   const ticketId = req.params.id;
@@ -135,6 +184,7 @@ module.exports = {
   getTicketById,
   getActiveTicketsByUserId,
   updateTicketStatus,
+  FetchAllTickets
   //  updateTicket,
   //  deleteTicket,
 };

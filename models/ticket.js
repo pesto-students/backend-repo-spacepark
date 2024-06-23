@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("./../db");
 const User = require("./user"); // Import the User model
-const ParkingSpace = require("./parkingSpace"); //Import the Parking Space model
+const ParkingSpace = require("./parkingSpace"); // Import the Parking Space model
 const Service = require("./ServericesModel"); // Import the service model
 
 const Ticket = sequelize.define("Tickets", {
@@ -34,31 +34,29 @@ const Ticket = sequelize.define("Tickets", {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
-  checkInTime: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  checkOutTime: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
   endDate: {
     type: DataTypes.DATEONLY,
-    allowNull: false,
-  },
-  services: {
-    type: DataTypes.STRING,
     allowNull: false,
   },
   price: {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
-  // active, onuse, used, expired
-  //add on more filed for QRcode id
   status: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  checkInTime: {
+    type: DataTypes.STRING, // Changed to STRING to store time as 'HH:mm'
+    allowNull: true,
+  },
+  checkOutTime: {
+    type: DataTypes.STRING, // Changed to STRING to store time as 'HH:mm'
+    allowNull: true,
+  },
+  services: {
+    type: DataTypes.JSON,
+    allowNull: true,
   },
   createdAt: {
     type: DataTypes.DATE,

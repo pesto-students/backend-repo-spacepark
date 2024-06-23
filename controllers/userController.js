@@ -145,17 +145,22 @@ const deleteUser = asyncWrapper(async (req, res) => {
 
 // Generate QR code
 const generateQRCode = async (req, res) => {
+
   try {
     const userId = req.params.id;
+
     console.log(`Received userId: ${userId}`);
     const user = await User.findByPk(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
     console.log(`Found user: ${JSON.stringify(user)}`);
-    const qrCode = await QRCode.toDataURL(user.id.toString());
+    const url=`${process.env.WEBAPP_URL}/activeUsers/${userId}`;
+    const qrCode = await QRCode.toDataURL(url);
+    console.log(qrCode, 'QQQQQQQQQQQQQQQQQQQQQQQQQQ');
     res.json({ qrCode });
   } catch (error) {
+    console.log(error, 'Error  ------------------');
     res.status(500).json({ message: error.message });
   }
 };
