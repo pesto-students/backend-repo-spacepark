@@ -64,13 +64,13 @@ const createParkingSpaceOwner = asyncWrapper(async (req, res, next) => {
   // Check if the email already exists
   const existingUserByEmail = await User.findOne({ where: { email } });
   if (existingUserByEmail) {
-    return res.status(400).json({ message: 'Email already in use' });
+    return res.status(409).json({ message: 'Email already in use' });
   }
 
   // Check if the username already exists
   const existingUserByUsername = await User.findOne({ where: { username } });
   if (existingUserByUsername) {
-    return res.status(400).json({ message: 'Username already in use' });
+    return res.status(410).json({ message: 'Username already in use' });
   }
 
   // Create a new user
@@ -104,6 +104,7 @@ const createParkingSpaceOwner = asyncWrapper(async (req, res, next) => {
     status: 201
   });
 });
+
 
 
 
