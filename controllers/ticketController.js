@@ -1,22 +1,22 @@
 const asyncWrapper = require("../utils/catchAsync");
 const Ticket = require("../models/ticket");
 const { Op } = require("sequelize");
-const moment  = require('moment');
+const moment = require("moment");
 
 const FetchAllTickets = asyncWrapper(async (req, res) => {
   console.log("########################");
-  const tickets = await Ticket.findAll().catch(err=> {
-    console.log(err, 'EEEEEEEEEEEEEEEEEEEEEEEE');
+  const tickets = await Ticket.findAll().catch((err) => {
+    console.log(err, "EEEEEEEEEEEEEEEEEEEEEEEE");
   });
   res.json(tickets);
 });
 
 const getAllTickets = asyncWrapper(async (req, res) => {
-  const { type } = req.query; // 'type' can be 'past', 'present', or 'future'
-  console.log(type, 'Tyoe -------------------');
+  const { type, userId } = req.query; // 'type' can be 'past', 'present', or 'future'
+  console.log(type, "Type -------------------");
   let dateCondition;
   const currentDate = new Date();
-console.log(currentDate, 'Current Date -------------------------');
+  console.log(currentDate, "Current Date -------------------------");
   switch (type) {
     case "past":
       dateCondition = {
@@ -47,7 +47,12 @@ console.log(currentDate, 'Current Date -------------------------');
   }
 
   const tickets = await Ticket.findAll({
-    where: dateCondition,
+    where: {
+      [Op.and]: [
+        dateCondition,
+        { userId: userId }, // Replace 'yourUserId' with the actual userId value
+      ],
+    },
   });
 
   res.json(tickets);
@@ -72,11 +77,17 @@ async function createTicket(req, res) {
     } = req.body;
 
     // Parse and format dates correctly
-    const formattedStartDate = moment(startDate, 'DD/MM/YYYY').isValid() ? moment(startDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null;
-    const formattedEndDate = moment(endDate, 'DD/MM/YYYY').isValid() ? moment(endDate, 'DD/MM/YYYY').format('YYYY-MM-DD') : null;
+    const formattedStartDate = moment(startDate, "DD/MM/YYYY").isValid()
+      ? moment(startDate, "DD/MM/YYYY").format("YYYY-MM-DD")
+      : null;
+    const formattedEndDate = moment(endDate, "DD/MM/YYYY").isValid()
+      ? moment(endDate, "DD/MM/YYYY").format("YYYY-MM-DD")
+      : null;
 
     if (!formattedStartDate || !formattedEndDate) {
-      return res.status(400).json({ error: 'Invalid date format. Please use DD/MM/YYYY.' });
+      return res
+        .status(400)
+        .json({ error: "Invalid date format. Please use DD/MM/YYYY." });
     }
 
     const ticket = await Ticket.create({
@@ -98,10 +109,11 @@ async function createTicket(req, res) {
     res.status(201).json(ticket);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'An error occurred while creating the ticket.' });
+    res
+      .status(500)
+      .json({ error: "An error occurred while creating the ticket." });
   }
 }
-
 
 const getTicketById = asyncWrapper(async (req, res) => {
   const ticketId = req.params.id;
@@ -122,7 +134,7 @@ const getActiveTicketsByUserId = asyncWrapper(async (req, res, next) => {
       userId,
       status: {
         [Op.in]: ["Booked", "Checked-In"],
-        },
+      },
       startTime: {
         [Op.lte]: currentTime,
       },
@@ -184,7 +196,7 @@ module.exports = {
   getTicketById,
   getActiveTicketsByUserId,
   updateTicketStatus,
-  FetchAllTickets
+  FetchAllTickets,
   //  updateTicket,
   //  deleteTicket,
 };
