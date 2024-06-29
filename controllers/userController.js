@@ -110,7 +110,7 @@ const createParkingSpaceOwner = asyncWrapper(async (req, res, next) => {
 
 
 const getUserById = asyncWrapper(async (req, res) => {
-  const userId = req.params.id;
+  const userId = req.params.id || req.user.id;
   const user = await User.findByPk(userId);
   if (!user) {
     return res.status(404).json({ message: "User not found" });
@@ -120,7 +120,6 @@ const getUserById = asyncWrapper(async (req, res) => {
 
 const updateUser = asyncWrapper(async (req, res) => {
   try {
-    console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     const userId = req.params.id;
     const user = await User.findByPk(userId);
     if (!user) {

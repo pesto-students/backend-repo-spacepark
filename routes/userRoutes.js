@@ -1,11 +1,13 @@
 // userRoutes.js
 const express = require("express");
 const userController = require("./../controllers/userController");
-const checkAction = require('../middlewares/checkAction')
+const checkAction = require('../middlewares/checkAction');
+const validateToken = require('../middlewares/ValidateToken');
 
 const router = express.Router();
 console.log("RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR");
-router.get("/", userController.getAllUsers)
+router.get("/", userController.getAllUsers );
+router.get("/verify", validateToken, userController.getUserById );
 router.post("/", checkAction, (req, res) => {
 
     if (req.hasAction) {
